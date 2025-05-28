@@ -508,8 +508,13 @@ if st.button("צור מילים"):
                 final_output += f"\n{category}:\n" + ', '.join(swaps) + "\n"
 
         if final_output:
-            st.text_area("פלט", value=final_output.strip(), height=300)
-        else:
-            st.info("לא נמצאו תבניות עבור השורש.")
+    st.markdown(f"""
+        <div style="text-align: right; direction: rtl; font-family: 'Frank Ruhl Libre', serif; font-size: 18px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; background-color: #f9f9f9; width: 100%;">
+        {final_output.replace('\n', '<br>')}
+        </div>
+        """, unsafe_allow_html=True)
+else:
+    st.info("לא נמצאו תבניות עבור השורש.")
+
     else:
         st.warning("הקלידו שורש בן 3 או 4 אותיות בלבד.")
