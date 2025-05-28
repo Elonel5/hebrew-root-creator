@@ -327,7 +327,7 @@ def generate_brother_swaps(input_letters):
     brother_groups = {
         "חילופי אותיות - גרוניים (אהחע)": ['א', 'ה', 'ע', 'ח'],
         "חילופי אותיות - חיככיים (גיכק)": ['ג', 'כ', 'ק'],
-        "חילופי אותיות - לשוניים (דטלנת)": ['ד', 'ט', 'ל', 'נ', 'ת'] ,
+        "חילופי אותיות - לשוניים (דטלנת)": ['ד', 'ט', 'ל', 'נ', 'ת'],
         "חילופי אותיות - שפתיים (בומפ -הואו עיצורית)" : ['ב', 'מ', 'פ', 'ו'],
         "חילופי אותיות - שיניים (זסצרש)" : ['ר', 'ש', 'ז', 'צ', 'ס'],
         "חילופי אותיות - שוטפים (למנר)" : ['ל', 'מ', 'נ', 'ר']
@@ -345,37 +345,40 @@ def generate_brother_swaps(input_letters):
     brother_swaps = {}
 
     for group_name, group_letters in brother_groups.items():
-        for i, letter in enumerate(input_letters):
-            if letter in group_letters:
-                variations = [input_letters[:i] + brother + input_letters[i+1:] for brother in group_letters if brother != letter]
-                brother_swaps[group_name] = variations
+        variations = [replace_end_letters(add_dagesh(input_letters[:i] + brother + input_letters[i+1:]))
+                      for i, letter in enumerate(input_letters) if letter in group_letters
+                      for brother in group_letters if brother != letter]
+        if variations:
+            brother_swaps[group_name] = variations
 
     # Generate swaps for common letter pairs
     common_variations = set()
     for i, letter in enumerate(input_letters):
         if letter in common_swaps:
             swapped = input_letters[:i] + common_swaps[letter] + input_letters[i+1:]
+            swapped = replace_end_letters(add_dagesh(swapped))
             common_variations.add(swapped)
     common_variations = list(common_variations - {input_letters})  # Remove the original root if present
     brother_swaps["חילופי אותיות נפוצים במיוחד"] = common_variations
 
     # Generate all permutations of the input letters
     all_permutations = set(''.join(p) for p in permutations(input_letters))
-    all_permutations = list(all_permutations - {input_letters})  # Remove the original root if present
+    all_permutations = set(replace_end_letters(add_dagesh(word)) for word in all_permutations)
+    all_permutations = list(all_permutations - {input_letters})
     brother_swaps["כל שיכולי האותיות"] = all_permutations
-    
+
     # Additional condition for גרוניים וגרוניים־חטופים
     if any(letter in input_letters for letter in 'אהחעכקר'):
         variations = set()
         for letter in 'כקר':
             for swap in 'אהחע':
                 if letter in input_letters:
-                    variations.add(input_letters.replace(letter, swap))
+                    variations.add(replace_end_letters(add_dagesh(input_letters.replace(letter, swap))))
         for letter in 'אהחע':
             for swap in 'כקר':
                 if letter in input_letters:
-                    variations.add(input_letters.replace(letter, swap))
-        variations = list(variations - {input_letters})  # Remove the original root if present
+                    variations.add(replace_end_letters(add_dagesh(input_letters.replace(letter, swap))))
+        variations = list(variations - {input_letters})
         brother_swaps["חילופי אותיות - גרוניים (אהחע) וגרוניים־חטופים (כקר)"] = variations
 
     # Additional condition for לשוניים ושורקים
@@ -384,29 +387,30 @@ def generate_brother_swaps(input_letters):
         for letter in 'שצסז':
             for swap in 'דטלנת':
                 if letter in input_letters:
-                    variations.add(input_letters.replace(letter, swap))
+                    variations.add(replace_end_letters(add_dagesh(input_letters.replace(letter, swap))))
         for letter in 'דטלנת':
             for swap in 'שצסז':
                 if letter in input_letters:
-                    variations.add(input_letters.replace(letter, swap))
-        variations = list(variations - {input_letters})  # Remove the original root if present
+                    variations.add(replace_end_letters(add_dagesh(input_letters.replace(letter, swap))))
+        variations = list(variations - {input_letters})
         brother_swaps["חילופי אותיות - לשוניים (דטלנת) ושורקים (זסצש)"] = variations
-        
+
     # Additional condition for לשוניים וחיכיים
     if any(letter in input_letters for letter in 'דטלנתגכק'):
         variations = set()
         for letter in 'גכק':
             for swap in 'דטלנת':
                 if letter in input_letters:
-                    variations.add(input_letters.replace(letter, swap))
+                    variations.add(replace_end_letters(add_dagesh(input_letters.replace(letter, swap))))
         for letter in 'דטלנת':
             for swap in 'גכק':
                 if letter in input_letters:
-                    variations.add(input_letters.replace(letter, swap))
-        variations = list(variations - {input_letters})  # Remove the original root if present
+                    variations.add(replace_end_letters(add_dagesh(input_letters.replace(letter, swap))))
+        variations = list(variations - {input_letters})
         brother_swaps["ב חילופי אותיות - לשוניים (דטלנת)וחיכיים (גיכק) "] = variations
 
     return brother_swaps
+
 
 
 def generate_double_gronit_swaps(input_letters):
@@ -419,7 +423,10 @@ def generate_double_gronit_swaps(input_letters):
             '2ַ3ְ2ַ3ִים',
             '2ַ3ְ2ֶ3ֶת'
         ]
-        double_gronit_swaps = [pattern.replace('2', input_letters[1]).replace('3', input_letters[2]) for pattern in patterns]
+        double_gronit_swaps = [
+            replace_end_letters(add_dagesh(pattern.replace('2', input_letters[1]).replace('3', input_letters[2])))
+            for pattern in patterns
+        ]
 
     # Check if the second letter is one of א, ה, ח, ע
     elif input_letters[1] in 'אהחע':
@@ -428,9 +435,13 @@ def generate_double_gronit_swaps(input_letters):
             '1ַ3ְ1ַ3ִים',
             '1ַ3ְ1ֶ3ֶת'
         ]
-        double_gronit_swaps = [pattern.replace('1', input_letters[0]).replace('3', input_letters[2]) for pattern in patterns]
+        double_gronit_swaps = [
+            replace_end_letters(add_dagesh(pattern.replace('1', input_letters[0]).replace('3', input_letters[2])))
+            for pattern in patterns
+        ]
 
     return double_gronit_swaps
+
 
 
 # Function to get input and display the output lists
@@ -520,7 +531,7 @@ st.markdown("""
 st.markdown('<div class="logo-text">הַמַחְדֵשָׁה</div>', unsafe_allow_html=True)
 st.markdown('<div class="tagline-text">של אילון</div>', unsafe_allow_html=True)
 
-st.markdown('<div class="input-label">יש להזין שורש עברי:</div>', unsafe_allow_html=True)
+st.markdown('<div class="input-label">יש להזין שורש עברי</div>', unsafe_allow_html=True)
 root = st.text_input("", key="root_input")
 
 
