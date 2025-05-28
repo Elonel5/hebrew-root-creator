@@ -483,12 +483,28 @@ st.markdown("""
         margin-bottom: 30px;
     }
 
+    .stTextInput {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .stTextInput>div {
+        width: auto !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
     .stTextInput>div>div>input {
         text-align: center;
         direction: rtl;
         font-size: 40px;
         font-family: 'Courier New', monospace;
         width: 100px !important;
+        background-color: #f0f2f6 !important;  /* Light grey color */
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 5px;
     }
     </style>
     """, unsafe_allow_html=True)
