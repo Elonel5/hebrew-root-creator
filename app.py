@@ -1,6 +1,8 @@
 import streamlit as st
 from itertools import permutations
 
+st.set_page_config(page_title="המחדשה", layout="centered")
+
 # Function to make initial replacements in the input
 def initial_replacements(word):
     replacements = {
@@ -453,7 +455,6 @@ def generate_double_gronit_swaps(input_letters):
 
 # ------------------------- Streamlit App -------------------------
 
-st.set_page_config(page_title="המחדשה", layout="centered")
 
 # ------------------------- Streamlit Layout -------------------------
 
