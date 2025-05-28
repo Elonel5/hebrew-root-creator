@@ -451,9 +451,10 @@ def generate_double_gronit_swaps(input_letters):
 # --------- Streamlit Interface -------------
 # -------------------------------------------
 
+# ------------------------- Streamlit App -------------------------
+
 st.set_page_config(page_title="המחדשה", layout="centered")
-st.markdown('<div style="font-family: Frank Ruhl Libre, serif; font-size: 28px; margin-bottom: 20px;">של אילון</div>', unsafe_allow_html=True)
-# Custom CSS for fonts, centering, and layout
+
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre&display=swap');
@@ -465,43 +466,37 @@ st.markdown("""
     }
 
     .logo-text {
+        font-family: 'Frank Ruhl Libre', serif;
         font-size: 64px;
         font-weight: bold;
         margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .tagline-text {
+        font-family: 'Frank Ruhl Libre', serif;
+        font-size: 28px;
+        font-weight: normal;
         margin-bottom: 30px;
     }
 
-    .stTextInput, .stTextArea, .stButton>button {
-        font-family: 'Frank Ruhl Libre', serif !important;
-        font-size: 20px !important;
-    }
-
     .stTextInput>div>div>input {
-    text-align: center;
-    direction: rtl;
-    font-size: 32px;
-    font-family: 'Courier New', monospace;
-    width: 150px !important;  /* Narrower input */
-    }
-
-
-    .result-box {
-        font-family: 'Frank Ruhl Libre', serif;
-        font-size: 18px;
-        text-align: right;
+        text-align: center;
         direction: rtl;
+        font-size: 32px;
+        font-family: 'Courier New', monospace;
+        width: 150px !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# Logo text
 st.markdown('<div class="logo-text">הַמַחְדֵשָׁה</div>', unsafe_allow_html=True)
+st.markdown('<div class="tagline-text">של אילון</div>', unsafe_allow_html=True)
 
-# Intro text
-st.markdown('<div style="font-family: Frank Ruhl Libre, serif; font-size: 28px; margin-bottom: 20px;">של אילון</div>', unsafe_allow_html=True)
+with st.form("root_input_form"):
+    root = st.text_input("יש להזין שורש עברי:", key="root_input")
+    submit = st.form_submit_button("חדש־נא!")
 
-# Input field for root
-root = st.text_input("יש להזין שורש עברי:", key="root_input")
 
 # Button to generate results
 if st.button("חדש־נא!"):
