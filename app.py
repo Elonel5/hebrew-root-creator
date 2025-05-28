@@ -486,9 +486,9 @@ st.markdown("""
     .stTextInput>div>div>input {
         text-align: center;
         direction: rtl;
-        font-size: 32px;
+        font-size: 40px;
         font-family: 'Courier New', monospace;
-        width: 150px !important;
+        width: 100px !important;
     }
     </style>
     """, unsafe_allow_html=True)
