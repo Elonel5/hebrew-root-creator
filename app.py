@@ -507,23 +507,29 @@ if st.button("צור מילים"):
             for category, swaps in brothers.items():
                 final_output += f"\n{category}:\n" + ', '.join(swaps) + "\n"
 
-        if final_output:
-    # Format the final output: make titles bold, lists in one line
-                formatted_output = ""
-                 for line in final_output.strip().split("\n"):
-                    if ":" in line:
-                        parts = line.split(":", 1)
-                        title = parts[0].strip()
-                        content = parts[1].strip()
-                        formatted_output += f"<b>{title}:</b> {content}<br>"
-                 else:
-                        formatted_output += f"{line}<br>"
-
+    if final_output:
+        # Format the final output: make titles bold, lists in one line
+        formatted_output = ""
+        for line in final_output.strip().split("\n"):
+            if ":" in line:
+                parts = line.split(":", 1)
+                title = parts[0].strip()
+                content = parts[1].strip()
+                formatted_output += f"<b>{title}:</b> {content}<br>"
+            else:
+                formatted_output += f"{line}<br>"
+    
         st.markdown(f"""
             <div style="text-align: right; direction: rtl; font-family: 'Frank Ruhl Libre', serif; font-size: 18px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; background-color: #f9f9f9; width: 100%;">
             {formatted_output}
             </div>
             """, unsafe_allow_html=True)
+else:
+    st.info("לא נמצאו תבניות עבור השורש.")
+
+else:
+    st.info("לא נמצאו תבניות עבור השורש.")
+
 
     else:
         st.warning("הקלידו שורש בן 3 או 4 אותיות בלבד.")
