@@ -500,11 +500,11 @@ st.markdown("""
         direction: rtl;
         font-size: 40px;
         font-family: 'Courier New', monospace;
-        width: 100px !important;
+        width: 150px !important;
         background-color: #f0f2f6 !important;  /* Light grey color */
         border: 1px solid #ccc;
         border-radius: 15px;
-        padding: 10px;
+        padding: 15px;
     }
     
         .input-label {
