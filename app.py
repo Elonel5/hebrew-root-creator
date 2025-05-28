@@ -44,6 +44,12 @@ def replace_end_letters(word):
         return word[:-1] + 'עַ'  
     else:
         return word
+
+def add_dagesh(word):
+    if len(word) > 0 and '\u05BC' not in word[0]:
+        return word[0] + '\u05BC' + word[1:]
+    return word
+
         
 
 # Function to replace specific letter combinations
@@ -85,10 +91,16 @@ def generate_list(letters, patterns):
         modified_pattern = pattern.replace('1', letters[0]) \
                                   .replace('2', letters[1]) \
                                   .replace('3', letters[2])
-        transformed_pattern = replace_end_letters(modified_pattern)
+        transformed_pattern = replace_end_letters(add_dagesh(modified_pattern))
         final_pattern = replace_letters(transformed_pattern)  # Apply replace_letters here
         replaced_list.append(final_pattern)
     return replaced_list
+
+def add_dagesh(word):
+    if len(word) > 0 and '\u05BC' not in word[0]:  # Check for dagesh in the first letter
+        return word[0] + '\u05BC' + word[1:]
+    return word
+
 
 # Function to generate additional categories based on specific conditions
 def generate_additional_categories(input_letters):
@@ -440,7 +452,7 @@ def generate_double_gronit_swaps(input_letters):
 # -------------------------------------------
 
 st.set_page_config(page_title="המחדשה", layout="centered")
-
+st.markdown('<div style="font-family: Frank Ruhl Libre, serif; font-size: 28px; margin-bottom: 20px;">של אילון</div>', unsafe_allow_html=True)
 # Custom CSS for fonts, centering, and layout
 st.markdown("""
     <style>
@@ -464,6 +476,15 @@ st.markdown("""
         font-size: 20px !important;
     }
 
+    .stTextInput>div>div>input {
+    text-align: center;
+    direction: rtl;
+    font-size: 32px;
+    font-family: 'Courier New', monospace;
+    width: 150px !important;  /* Narrower input */
+    }
+
+
     .result-box {
         font-family: 'Frank Ruhl Libre', serif;
         font-size: 18px;
@@ -477,13 +498,13 @@ st.markdown("""
 st.markdown('<div class="logo-text">הַמַחְדֵשָׁה</div>', unsafe_allow_html=True)
 
 # Intro text
-st.markdown("ברוכים הבאים ל'הַמַחְדֵשָׁה' – כלי לניתוח שורשים בעברית. הזינו שורש בן שלוש או ארבע אותיות כדי לקבל תבניות ושמות אפשריים.")
+st.markdown('<div style="font-family: Frank Ruhl Libre, serif; font-size: 28px; margin-bottom: 20px;">של אילון</div>', unsafe_allow_html=True)
 
 # Input field for root
-root = st.text_input("הקלידו שורש עברי (3-4 אותיות):")
+root = st.text_input("יש להזין שורש עברי:", key="root_input")
 
 # Button to generate results
-if st.button("צור מילים"):
+if st.button("חדש־נא!"):
     if 3 <= len(root) <= 4:
         root_processed = initial_replacements(root)
         root_processed = process_letters(root_processed)
@@ -497,16 +518,27 @@ if st.button("צור מילים"):
 
         final_output = ""
 
-        if results:
-            for category, words in results.items():
-                final_output += f"\n{category}:\n" + ', '.join(words) + "\n"
-
+        special_sections = ["הוספת אות בתחילת מילה", "ריבוי מיוחד", "שורשים תניינים אפשריים"]
+        all_keys = list(results.keys())
+        
+        for key in all_keys:
+            if key not in special_sections and key != "נדירים":
+                final_output += f"{key}: {', '.join(results[key])}\n"
+        
+        for key in special_sections:
+            if key in results:
+                final_output += f"{key}: {', '.join(results[key])}\n"
+        
         if double_gronit:
-            final_output += "\nהכפלות אפשריות בחיסור אות גרונית:\n" + ', '.join(double_gronit) + "\n"
+            final_output += f"חֲ1ַ2ֶּ3ֶת, 1וּ2ְ3ָה: {', '.join(double_gronit)}\n"
+            final_output += "הכפלת אות: 2ִ3ְ2ֵ3\n"
+        
+        if "נדירים" in results:
+            final_output += f"נדירים: {', '.join(results['נדירים'])}\n"
+        
+        for key, words in brothers.items():
+            final_output += f"{key}: {', '.join(words)}\n"
 
-        if brothers:
-            for category, swaps in brothers.items():
-                final_output += f"\n{category}:\n" + ', '.join(swaps) + "\n"
 
         if final_output:
             # Format the final output: make titles bold, lists in one line
@@ -519,6 +551,7 @@ if st.button("צור מילים"):
                     formatted_output += f"<b>{title}:</b> {content}<br>"
                 else:
                     formatted_output += f"{line}<br>"
+
 
             st.markdown(f"""
                 <div style="text-align: right; direction: rtl; font-family: 'Frank Ruhl Libre', serif; font-size: 18px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; background-color: #f9f9f9; width: 100%;">
