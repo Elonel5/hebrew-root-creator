@@ -439,27 +439,39 @@ def generate_double_gronit_swaps(input_letters):
 
 st.set_page_config(page_title="המחדשה", layout="centered")
 
-# Custom CSS for fonts and layout
+# Custom CSS for fonts, centering, and layout
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre&display=swap');
 
     html, body, [class*="css"]  {
         font-family: 'Frank Ruhl Libre', serif;
+        text-align: center;
         direction: rtl;
-        text-align: right;
     }
 
     .logo-text {
-        font-family: 'David', serif;
+        font-size: 64px;
         font-weight: bold;
-        font-size: 48px;
-        margin-bottom: 10px;
+        margin-top: 20px;
+        margin-bottom: 30px;
+    }
+
+    .stTextInput, .stTextArea, .stButton>button {
+        font-family: 'Frank Ruhl Libre', serif !important;
+        font-size: 20px !important;
+    }
+
+    .result-box {
+        font-family: 'Frank Ruhl Libre', serif;
+        font-size: 18px;
+        text-align: right;
+        direction: rtl;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# Logo text (in place of the image logo)
+# Logo text
 st.markdown('<div class="logo-text">הַמַחְדֵשָׁה</div>', unsafe_allow_html=True)
 
 # Intro text
@@ -480,20 +492,24 @@ if st.button("צור מילים"):
 
         # Display results
         st.subheader("תוצאות:")
+
+        # Combine all results into one string for text area
+        final_output = ""
+
         if results:
             for category, words in results.items():
-                st.markdown(f"**{category}:**")
-                st.text('\n'.join(words))
-        else:
-            st.info("לא נמצאו תבניות עבור השורש.")
+                final_output += f"\n{category}:\n" + ', '.join(words) + "\n"
 
         if double_gronit:
-            st.markdown("**הכפלות אפשריות בחיסור אות גרונית:**")
-            st.text('\n'.join(double_gronit))
+            final_output += "\nהכפלות אפשריות בחיסור אות גרונית:\n" + ', '.join(double_gronit) + "\n"
 
         if brothers:
             for category, swaps in brothers.items():
-                st.markdown(f"**{category}:**")
-                st.text(', '.join(swaps))
+                final_output += f"\n{category}:\n" + ', '.join(swaps) + "\n"
+
+        if final_output:
+            st.text_area("פלט", value=final_output.strip(), height=300)
+        else:
+            st.info("לא נמצאו תבניות עבור השורש.")
     else:
         st.warning("הקלידו שורש בן 3 או 4 אותיות בלבד.")
