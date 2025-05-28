@@ -470,8 +470,8 @@ st.markdown("""
 
     .logo-text {
         font-family: 'Frank Ruhl Libre', serif;
-        font-size: 64px;
-        font-weight: bold;
+        font-size: 96px;
+        font-weight: normal;
         margin-top: 20px;
         margin-bottom: 10px;
     }
@@ -503,16 +503,25 @@ st.markdown("""
         width: 100px !important;
         background-color: #f0f2f6 !important;  /* Light grey color */
         border: 1px solid #ccc;
-        border-radius: 8px;
-        padding: 5px;
+        border-radius: 15px;
+        padding: 10px;
     }
+    
+        .input-label {
+        font-family: 'Frank Ruhl Libre', serif;
+        font-size: 22px;
+        font-weight: normal;
+        margin-bottom: 5px;
+    }
+
     </style>
     """, unsafe_allow_html=True)
 
 st.markdown('<div class="logo-text">הַמַחְדֵשָׁה</div>', unsafe_allow_html=True)
 st.markdown('<div class="tagline-text">של אילון</div>', unsafe_allow_html=True)
 
-root = st.text_input("יש להזין שורש עברי:", key="root_input")
+st.markdown('<div class="input-label">יש להזין שורש עברי:</div>', unsafe_allow_html=True)
+root = st.text_input("", key="root_input")
 
 
 
