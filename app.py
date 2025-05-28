@@ -455,6 +455,10 @@ def generate_double_gronit_swaps(input_letters):
 
 st.set_page_config(page_title="המחדשה", layout="centered")
 
+# ------------------------- Streamlit Layout -------------------------
+
+st.set_page_config(page_title="המחדשה", layout="centered")
+
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre&display=swap');
@@ -468,7 +472,7 @@ st.markdown("""
     .logo-text {
         font-family: 'Frank Ruhl Libre', serif;
         font-size: 64px;
-        font-weight: bold;
+        font-weight: normal;
         margin-top: 20px;
         margin-bottom: 10px;
     }
@@ -493,9 +497,8 @@ st.markdown("""
 st.markdown('<div class="logo-text">הַמַחְדֵשָׁה</div>', unsafe_allow_html=True)
 st.markdown('<div class="tagline-text">של אילון</div>', unsafe_allow_html=True)
 
-with st.form("root_input_form"):
-    root = st.text_input("יש להזין שורש עברי:", key="root_input")
-    submit = st.form_submit_button("חדש־נא!")
+root = st.text_input("יש להזין שורש עברי:", key="root_input")
+
 
 
 # Button to generate results
