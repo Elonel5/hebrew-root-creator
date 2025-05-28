@@ -551,26 +551,35 @@ if st.button("חדש־נא!"):
 
         final_output = ""
 
-        special_sections = ["הוספת אות בתחילת מילה", "ריבוי מיוחד", "שורשים תניינים אפשריים"]
-        all_keys = list(results.keys())
-        
-        for key in all_keys:
-            if key not in special_sections and key != "נדירים":
+        # Regular categories first (everything except the special sections and נדירים)
+        skip_sections = ["שונות", "הוספת אות בתחילת מילה", "ריבוי מיוחד", "שורשים תניינים אפשריים", "נדירים"]
+        for key in results:
+            if key not in skip_sections:
                 final_output += f"{key}: {', '.join(results[key])}\n"
         
+        # Then 'שונות'
+        if "שונות" in results:
+            final_output += f"שונות: {', '.join(results['שונות'])}\n"
+        
+        # Then the special sections
+        special_sections = ["הוספת אות בתחילת מילה", "ריבוי מיוחד", "שורשים תניינים אפשריים"]
         for key in special_sections:
             if key in results:
                 final_output += f"{key}: {', '.join(results[key])}\n"
         
+        # Then the double gronit lines
         if double_gronit:
             final_output += f"חֲ1ַ2ֶּ3ֶת, 1וּ2ְ3ָה: {', '.join(double_gronit)}\n"
             final_output += "הכפלת אות: 2ִ3ְ2ֵ3\n"
         
+        # Then 'נדירים'
         if "נדירים" in results:
             final_output += f"נדירים: {', '.join(results['נדירים'])}\n"
         
+        # Then brother swaps and permutations
         for key, words in brothers.items():
             final_output += f"{key}: {', '.join(words)}\n"
+
 
 
         if final_output:
