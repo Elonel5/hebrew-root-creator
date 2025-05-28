@@ -1,8 +1,6 @@
 import streamlit as st
 from itertools import permutations
 
-st.set_page_config(page_title="המחדשה", layout="centered")
-
 # Function to make initial replacements in the input
 def initial_replacements(word):
     replacements = {
@@ -473,7 +471,7 @@ st.markdown("""
     .logo-text {
         font-family: 'Frank Ruhl Libre', serif;
         font-size: 64px;
-        font-weight: normal;
+        font-weight: bold;
         margin-top: 20px;
         margin-bottom: 10px;
     }
